@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_booking_customer" model="mail.template">
+            <field name="name">AI Chatbot: meeting confirmation (customer)</field>
+            <field name="model_id" ref="model_isd_ai_chatbot_lead"/>
+            <field name="email_from">{{ (object.assigned_user_id.email_formatted or object.env.company.email_formatted) }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="subject">{{ object.lang == 'en' and 'Your consultation is booked' or 'Lịch tư vấn của bạn đã được xác nhận' }}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; font-size: 14px; color: #1e293b;">
+    <t t-if="object.lang == 'en'">
+        <p>Hello <t t-out="object.name"/>,</p>
+        <p>Your consultation is booked for
+            <strong t-out="object.meeting_time_display"/>.</p>
+        <p>It will be with <strong t-out="object.assigned_user_id.name"/>.</p>
+        <p t-if="object.calendar_event_id.videocall_location">Join the video call here:
+            <a t-att-href="object.calendar_event_id.videocall_location" t-out="object.calendar_event_id.videocall_location"/></p>
+        <p>See you then.</p>
+    </t>
+    <t t-else="">
+        <p>Xin chào <t t-out="object.name"/>,</p>
+        <p>Lịch tư vấn của bạn đã được đặt vào
+            <strong t-out="object.meeting_time_display"/>.</p>
+        <p>Người tư vấn: <strong t-out="object.assigned_user_id.name"/>.</p>
+        <p t-if="object.calendar_event_id.videocall_location">Tham gia cuộc gọi video tại:
+            <a t-att-href="object.calendar_event_id.videocall_location" t-out="object.calendar_event_id.videocall_location"/></p>
+        <p>Hẹn gặp bạn.</p>
+    </t>
+</div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <record id="mail_template_booking_agent" model="mail.template">
+            <field name="name">AI Chatbot: meeting booked (salesperson)</field>
+            <field name="model_id" ref="model_isd_ai_chatbot_lead"/>
+            <field name="email_from">{{ object.env.company.email_formatted }}</field>
+            <field name="email_to">{{ object.assigned_user_id.email }}</field>
+            <field name="subject">Meeting booked: {{ object.name }}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; font-size: 14px; color: #1e293b;">
+    <p>A consultation from the chatbot is booked for you.</p>
+    <ul>
+        <li>Customer: <strong t-out="object.name"/></li>
+        <li t-if="object.phone">Phone: <t t-out="object.phone"/></li>
+        <li t-if="object.email">Email: <t t-out="object.email"/></li>
+        <li>When: <strong t-out="object.meeting_time_display"/> (customer's time)</li>
+        <li t-if="object.topic">Topic: <t t-out="object.topic"/></li>
+        <li t-if="object.calendar_event_id.videocall_location">Video call:
+            <a t-att-href="object.calendar_event_id.videocall_location" t-out="object.calendar_event_id.videocall_location"/></li>
+    </ul>
+</div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

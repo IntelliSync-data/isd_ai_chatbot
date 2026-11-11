@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_config_user,config user,model_isd_ai_chatbot_config,group_user,1,0,0,0
+access_config_editor,config editor,model_isd_ai_chatbot_config,group_editor,1,0,0,0
+access_config_admin,config admin,model_isd_ai_chatbot_config,group_admin,1,1,0,0
+access_knowledge_editor,knowledge editor,model_isd_ai_chatbot_knowledge,group_editor,1,1,1,1
+access_qa_editor,qa editor,model_isd_ai_chatbot_qa,group_editor,1,1,1,1
+access_source_user,source user,model_isd_ai_chatbot_source,group_user,1,0,0,0
+access_source_admin,source admin,model_isd_ai_chatbot_source,group_admin,1,1,1,1
+access_lead_user,lead user,model_isd_ai_chatbot_lead,group_user,1,1,1,0
+access_lead_manager,lead manager,model_isd_ai_chatbot_lead,group_manager,1,1,1,1
+access_conversation_user,conversation user,model_isd_ai_chatbot_conversation,group_user,1,0,0,0
+access_conversation_manager,conversation manager,model_isd_ai_chatbot_conversation,group_manager,1,1,0,1
+access_message_user,message user,model_isd_ai_chatbot_message,group_user,1,0,0,0
+access_message_manager,message manager,model_isd_ai_chatbot_message,group_manager,1,0,0,1
+access_webhook_log_admin,webhook log admin,model_isd_ai_chatbot_webhook_log,group_admin,1,0,0,1
+access_assign_wizard_user,assign wizard user,model_isd_ai_chatbot_lead_assign_wizard,group_user,1,1,1,1

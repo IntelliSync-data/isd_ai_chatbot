@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_survey_mapping_manager,survey mapping manager,model_isd_ai_chatbot_survey_mapping,isd_ai_chatbot.group_manager,1,1,1,1
+access_survey_mapping_user,survey mapping user,model_isd_ai_chatbot_survey_mapping,isd_ai_chatbot.group_user,1,0,0,0

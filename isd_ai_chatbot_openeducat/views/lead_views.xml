@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_form_openeducat" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.form.openeducat</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="inherit_id" ref="isd_ai_chatbot.view_lead_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <field name="invite_state" invisible="1"/>
+                <button name="action_invite_student" type="object" string="Invite as Student"
+                        invisible="invite_state != 'invite'"/>
+                <button name="action_invite_student" type="object" string="Resend Invitation"
+                        invisible="invite_state != 'resend'"/>
+            </xpath>
+            <xpath expr="//field[@name='calendar_event_id']" position="after">
+                <field name="student_id" invisible="not student_id"/>
+                <field name="survey_user_input_id" invisible="not survey_user_input_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

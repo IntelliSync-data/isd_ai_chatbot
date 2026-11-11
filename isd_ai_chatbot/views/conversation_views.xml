@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_conversation_list" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.conversation.list</field>
+        <field name="model">isd.ai.chatbot.conversation</field>
+        <field name="arch" type="xml">
+            <list string="Conversations" create="false">
+                <field name="last_message_at" string="Last Message"/>
+                <field name="source_id"/>
+                <field name="display_label" string="Customer"/>
+                <field name="lang" optional="show"/>
+                <field name="message_count"/>
+                <field name="lead_state" widget="badge" decoration-success="lead_state == 'done'"
+                       decoration-warning="lead_state == 'collecting'"/>
+                <field name="lead_id" optional="show"/>
+                <field name="page_url" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_conversation_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.conversation.form</field>
+        <field name="model">isd.ai.chatbot.conversation</field>
+        <field name="arch" type="xml">
+            <form string="Conversation" create="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="source_id" readonly="1"/>
+                            <field name="session_id" readonly="1"/>
+                            <field name="lang" readonly="1"/>
+                            <field name="status"/>
+                            <field name="page_url" readonly="1" widget="url"/>
+                        </group>
+                        <group string="What the customer left">
+                            <field name="lead_state" readonly="1"/>
+                            <field name="lead_name" readonly="1"/>
+                            <field name="lead_phone" readonly="1"/>
+                            <field name="lead_email" readonly="1"/>
+                            <field name="lead_topic" readonly="1"/>
+                            <field name="lead_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="message_ids" readonly="1" nolabel="1">
+                        <list decoration-info="role == 'bot'" decoration-bf="role == 'user'">
+                            <field name="create_date" string="Time"/>
+                            <field name="role"/>
+                            <field name="content"/>
+                            <field name="provider" optional="show"/>
+                            <field name="qa_id" optional="hide"/>
+                            <field name="citation_count" optional="hide"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_conversation_search" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.conversation.search</field>
+        <field name="model">isd.ai.chatbot.conversation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="lead_name"/>
+                <field name="lead_phone"/>
+                <field name="session_id"/>
+                <field name="message_ids" string="Message" filter_domain="[('message_ids.content', 'ilike', self)]"/>
+                <filter string="With a Lead" name="with_lead" domain="[('lead_id', '!=', False)]"/>
+                <filter string="Collecting Details" name="collecting" domain="[('lead_state', '=', 'collecting')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Source" name="group_source" context="{'group_by': 'source_id'}"/>
+                    <filter string="Day" name="group_day" context="{'group_by': 'last_message_at:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_conversation" model="ir.actions.act_window">
+        <field name="name">Conversations</field>
+        <field name="res_model">isd.ai.chatbot.conversation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

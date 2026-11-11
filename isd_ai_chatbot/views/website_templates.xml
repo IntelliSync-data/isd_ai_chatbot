@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Odoo's own pages load the same widget an outside site embeds, on the
+         websites ticked in the settings and nowhere else -->
+    <template id="website_widget_loader" inherit_id="website.layout" name="AI Chatbot: widget on the website">
+        <xpath expr="//head" position="inside">
+            <t t-if="website and website.isd_ai_chatbot_enabled">
+                <script src="/isd_ai_chatbot/widget.js" defer="defer"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

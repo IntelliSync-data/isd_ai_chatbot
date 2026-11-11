@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_config_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.config.form</field>
+        <field name="model">isd.ai.chatbot.config</field>
+        <field name="arch" type="xml">
+            <form string="AI Chatbot Settings" create="false" delete="false">
+                <header>
+                    <button name="action_load_sample_data" type="object" string="Load Bloompod Sample"
+                            class="btn-secondary" groups="isd_ai_chatbot.group_admin"
+                            confirm="This adds the Bloompod Q&amp;A and documents, and fills settings that were never changed. Existing entries are kept. Continue?"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="bot_title" placeholder="AI Assistant"/></h1>
+                        <field name="bot_subtitle" placeholder="Customer support · 24/7"/>
+                    </div>
+                    <notebook>
+                        <page string="Assistant" name="assistant">
+                            <group>
+                                <group string="Speaks for">
+                                    <field name="business_name" placeholder="Company name"/>
+                                    <field name="business_website" widget="url" placeholder="https://"/>
+                                </group>
+                                <group string="Language model">
+                                    <field name="has_language_model" string="AI connected" readonly="1"/>
+                                    <div colspan="2" class="text-muted" invisible="has_language_model">
+                                        No key set: the bot answers from Q&amp;A and the knowledge base only.
+                                        Add a key in the "AI Keys" tab for written answers.
+                                    </div>
+                                </group>
+                            </group>
+                            <group string="How it speaks">
+                                <field name="pronoun_style"/>
+                                <field name="tone_instruction"/>
+                                <field name="core_philosophy" placeholder="The one idea every answer should carry"/>
+                                <field name="forbidden_claims" placeholder="Promises it must never make"/>
+                                <field name="handoff_rule"/>
+                            </group>
+                        </page>
+
+                        <page string="Messages" name="messages">
+                            <div class="text-muted mb-2">
+                                Each text exists in Vietnamese and English. The bot answers in the language the
+                                customer writes in, and falls back to the other one if a text is empty.
+                            </div>
+                            <group>
+                                <group string="Vietnamese">
+                                    <field name="greeting_vi"/>
+                                    <field name="welcome_message_vi"/>
+                                    <field name="fallback_message_vi"/>
+                                    <field name="suggested_questions_vi" placeholder="One question per line"/>
+                                </group>
+                                <group string="English">
+                                    <field name="greeting_en"/>
+                                    <field name="welcome_message_en"/>
+                                    <field name="fallback_message_en"/>
+                                    <field name="suggested_questions_en" placeholder="One question per line"/>
+                                </group>
+                            </group>
+                            <group string="Query expansions">
+                                <field name="query_expansions" nolabel="1" colspan="2"
+                                       placeholder="price, cost, how much => gia ban uu dai"/>
+                                <div colspan="2" class="text-muted">
+                                    One rule per line. When a question contains a word on the left, the words on
+                                    the right are added to the search. That is how an English question finds a
+                                    Vietnamese document without a translation service.
+                                </div>
+                            </group>
+                        </page>
+
+                        <page string="AI Keys" name="keys" groups="isd_ai_chatbot.group_admin">
+                            <group>
+                                <group string="Google Gemini (tried first)">
+                                    <field name="gemini_api_key" password="True"/>
+                                    <field name="gemini_model"/>
+                                </group>
+                                <group string="OpenAI (if Gemini fails)">
+                                    <field name="openai_api_key" password="True"/>
+                                    <field name="openai_model"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Widget" name="widget">
+                            <group>
+                                <group string="Where it shows">
+                                    <field name="website_ids" widget="many2many_tags"/>
+                                    <field name="embed_code" widget="CopyClipboardChar" readonly="1"
+                                           string="Other sites"/>
+                                    <field name="cors_origins" groups="isd_ai_chatbot.group_admin"
+                                           placeholder="https://shop.example.com"/>
+                                </group>
+                                <group string="Look">
+                                    <field name="primary_color" widget="color"/>
+                                    <field name="secondary_color" widget="color"/>
+                                    <field name="avatar" widget="image" class="oe_avatar" options="{'size': [64, 64]}"/>
+                                </group>
+                            </group>
+                            <group string="Contact buttons">
+                                <div colspan="2" class="text-muted mb-2">
+                                    The bubble opens into a column of buttons. A button shows only when it has
+                                    something to open.
+                                </div>
+                                <group>
+                                    <field name="show_chat_button"/>
+                                    <field name="phone" placeholder="+84901234567"/>
+                                    <field name="zalo_link" widget="url" placeholder="https://zalo.me/0901234567"/>
+                                    <field name="messenger_link" widget="url" placeholder="https://m.me/yourpage"/>
+                                </group>
+                                <group>
+                                    <field name="color_toggle" widget="color"/>
+                                    <field name="color_chat" widget="color"/>
+                                    <field name="color_phone" widget="color"/>
+                                    <field name="color_zalo" widget="color"/>
+                                    <field name="color_messenger" widget="color"/>
+                                </group>
+                            </group>
+                            <group string="Button icons (optional)">
+                                <field name="icon_toggle" widget="image" options="{'size': [40, 40]}"/>
+                                <field name="icon_chat" widget="image" options="{'size': [40, 40]}"/>
+                                <field name="icon_phone" widget="image" options="{'size': [40, 40]}"/>
+                                <field name="icon_zalo" widget="image" options="{'size': [40, 40]}"/>
+                                <field name="icon_messenger" widget="image" options="{'size': [40, 40]}"/>
+                            </group>
+                        </page>
+
+                        <page string="Leads" name="leads">
+                            <group>
+                                <group>
+                                    <field name="auto_assign"/>
+                                    <field name="auto_crm"/>
+                                    <field name="timezone"/>
+                                </group>
+                                <group string="Buttons on a lead">
+                                    <field name="hide_analyze_button"/>
+                                    <field name="hide_crm_button"/>
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                Leads go to users with "Takes Chatbot Leads" ticked on their user record, the one
+                                with the fewest open leads first. With nobody ticked, leads wait for a manager.
+                            </div>
+                        </page>
+
+                        <page string="Zalo" name="zalo" groups="isd_ai_chatbot.group_admin">
+                            <group>
+                                <group>
+                                    <field name="zalo_enabled"/>
+                                    <field name="webhook_url_zalo" widget="CopyClipboardChar" readonly="1"/>
+                                    <field name="zalo_app_id"/>
+                                    <field name="zalo_secret_key" password="True"/>
+                                    <field name="zalo_webhook_secret" password="True"/>
+                                </group>
+                                <group>
+                                    <field name="zalo_access_token" password="True"/>
+                                    <field name="zalo_refresh_token" password="True"/>
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                Paste the webhook URL into the Zalo OA developer page and subscribe to
+                                "user_send_text". The tokens refresh themselves when Zalo reports them expired.
+                                Fill in the OA secret key so that only calls signed by Zalo are answered.
+                            </div>
+                        </page>
+
+                        <page string="Facebook" name="facebook" groups="isd_ai_chatbot.group_admin">
+                            <group>
+                                <group>
+                                    <field name="facebook_enabled"/>
+                                    <field name="webhook_url_facebook" widget="CopyClipboardChar" readonly="1"/>
+                                    <field name="facebook_verify_token"/>
+                                    <field name="facebook_page_id"/>
+                                </group>
+                                <group>
+                                    <field name="facebook_page_access_token" password="True"/>
+                                    <field name="facebook_app_id"/>
+                                    <field name="facebook_app_secret" password="True"/>
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                In the Meta app, set the callback URL to the webhook URL and the verify token to
+                                the same value as here, then subscribe the page to "messages". Every call is
+                                checked against the app secret.
+                            </div>
+                        </page>
+
+                        <page string="API" name="api" groups="isd_ai_chatbot.group_admin">
+                            <group>
+                                <field name="api_key" password="True" readonly="1"/>
+                                <button name="action_generate_api_key" type="object" string="Generate a New Key"
+                                        class="btn-secondary" colspan="2"
+                                        confirm="Systems using the current key will stop working. Continue?"/>
+                            </group>
+                            <div class="text-muted">
+                                <p><code>POST /isd_ai_chatbot/api/v1/leads</code> creates a lead and needs no key.</p>
+                                <p>Listing, reading, changing and deleting leads need the key, sent as
+                                    <code>Authorization: Bearer &lt;key&gt;</code> (or <code>X-API-Key</code>
+                                    from a server).</p>
+                                <p>See README.md in the module for the request and response format.</p>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_config" model="ir.actions.act_window">
+        <field name="name">AI Chatbot Settings</field>
+        <field name="res_model">isd.ai.chatbot.config</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="config_default"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

@@ -1,0 +1,192 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* isd_ai_chatbot_openeducat
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-11 00:24+0000\n"
+"PO-Revision-Date: 2026-11-11 00:24+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: isd_ai_chatbot_openeducat
+#. odoo-python
+#: code:addons/isd_ai_chatbot_openeducat/models/survey_mapping.py:0
+msgid "\"%s\" is already mapped to a question of this survey."
+msgstr "\"%s\" đã được gán cho một câu hỏi của khảo sát này."
+
+#. module: isd_ai_chatbot_openeducat
+#. odoo-python
+#: code:addons/isd_ai_chatbot_openeducat/models/lead.py:0
+msgid "%s already signs in to the system."
+msgstr "%s đã có tài khoản đăng nhập hệ thống."
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model,name:isd_ai_chatbot_openeducat.model_isd_ai_chatbot_lead
+msgid "AI Chatbot Lead"
+msgstr "Lead AI Chatbot"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model,name:isd_ai_chatbot_openeducat.model_isd_ai_chatbot_survey_mapping
+msgid "AI Chatbot Survey Mapping"
+msgstr "Liên kết khảo sát AI Chatbot"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__active
+msgid "Active"
+msgstr "Đang dùng"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__create_uid
+msgid "Created by"
+msgstr "Người tạo"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_survey_mapping__lead_field__email
+msgid "Email"
+msgstr "Email"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__id
+msgid "ID"
+msgstr "ID"
+
+#. module: isd_ai_chatbot_openeducat
+#. odoo-python
+#: code:addons/isd_ai_chatbot_openeducat/models/lead.py:0
+msgid "Invitation sent to %s."
+msgstr "Đã gửi lời mời tới %s."
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_lead__invite_state__invite
+msgid "Invite"
+msgstr "Mời"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_lead__invite_state
+msgid "Invite State"
+msgstr "Trạng thái mời"
+
+#. module: isd_ai_chatbot_openeducat
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_form_openeducat
+msgid "Invite as Student"
+msgstr "Mời làm học viên"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__lead_field
+msgid "Lead Field"
+msgstr "Trường của lead"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_survey_mapping__lead_field__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_lead__invite_state__none
+msgid "Nothing to Do"
+msgstr "Không cần làm gì"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_survey_mapping__lead_field__phone
+msgid "Phone"
+msgstr "Điện thoại"
+
+#. module: isd_ai_chatbot_openeducat
+#: model_terms:ir.actions.act_window,help:isd_ai_chatbot_openeducat.action_survey_mapping
+msgid ""
+"Pick the survey invited students get, and which of its questions the lead's name, email,\n"
+"                phone and topic answer."
+msgstr ""
+"Chọn khảo sát gửi cho học viên được mời, và câu hỏi nào nhận tên, email,\n"
+"                số điện thoại và chủ đề của lead."
+
+#. module: isd_ai_chatbot_openeducat
+#: model_terms:ir.actions.act_window,help:isd_ai_chatbot_openeducat.action_survey_mapping
+msgid "Pre-fill a survey from a lead"
+msgstr "Điền sẵn khảo sát từ lead"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__question_id
+msgid "Question"
+msgstr "Câu hỏi"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_lead__invite_state__resend
+msgid "Resend"
+msgstr "Gửi lại"
+
+#. module: isd_ai_chatbot_openeducat
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_form_openeducat
+msgid "Resend Invitation"
+msgstr "Gửi lại lời mời"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_lead__student_id
+msgid "Student"
+msgstr "Học viên"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__survey_id
+msgid "Survey"
+msgstr "Khảo sát"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.actions.act_window,name:isd_ai_chatbot_openeducat.action_survey_mapping
+#: model:ir.ui.menu,name:isd_ai_chatbot_openeducat.menu_survey_mapping
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_survey_mapping_list
+msgid "Survey Mappings"
+msgstr "Liên kết khảo sát"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_lead__survey_user_input_id
+msgid "Survey Response"
+msgstr "Bài trả lời khảo sát"
+
+#. module: isd_ai_chatbot_openeducat
+#. odoo-python
+#: code:addons/isd_ai_chatbot_openeducat/models/lead.py:0
+msgid "Survey started with the answers already given."
+msgstr "Đã mở khảo sát với các câu trả lời có sẵn."
+
+#. module: isd_ai_chatbot_openeducat
+#. odoo-python
+#: code:addons/isd_ai_chatbot_openeducat/models/lead.py:0
+msgid "The lead needs an email address to be invited."
+msgstr "Lead cần có email để gửi lời mời."
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields.selection,name:isd_ai_chatbot_openeducat.selection__isd_ai_chatbot_survey_mapping__lead_field__topic
+msgid "Topic"
+msgstr "Chủ đề"

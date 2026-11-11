@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- noupdate: an upgrade must never put back what an administrator changed -->
+    <data noupdate="1">
+        <record id="config_default" model="isd.ai.chatbot.config">
+            <field name="name">AI Chatbot</field>
+        </record>
+    </data>
+</odoo>

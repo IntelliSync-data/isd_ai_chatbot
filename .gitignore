@@ -1,0 +1,4 @@
+# macOS writes one of these into every folder Finder opens
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_list" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.list</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="arch" type="xml">
+            <list string="Chatbot Leads" decoration-muted="state == 'cancelled'" decoration-success="state == 'booked'">
+                <field name="create_date" string="Created" widget="datetime" optional="show"/>
+                <field name="name"/>
+                <field name="phone" widget="phone" optional="show"/>
+                <field name="email" widget="email" optional="show"/>
+                <field name="topic" optional="show"/>
+                <field name="source_id" optional="show"/>
+                <field name="assigned_user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="consultation_datetime" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'new'" decoration-warning="state == 'crm'"
+                       decoration-success="state == 'booked'" decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_kanban" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.kanban</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" quick_create="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold"/>
+                        <div class="text-muted">
+                            <field name="phone"/> <field name="email"/>
+                        </div>
+                        <field name="topic" class="small"/>
+                        <footer>
+                            <field name="source_id" class="small text-muted"/>
+                            <field name="assigned_user_id" widget="many2one_avatar_user" class="ms-auto"/>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_lead_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.form</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="arch" type="xml">
+            <form string="Chatbot Lead">
+                <field name="hide_analyze_button" invisible="1"/>
+                <field name="hide_crm_button" invisible="1"/>
+                <field name="analyzed" invisible="1"/>
+                <header>
+                    <button name="action_save_to_crm" type="object" string="Save to CRM" class="btn-primary"
+                            invisible="crm_lead_id or hide_crm_button or state == 'cancelled'"/>
+                    <button name="action_set_meeting_time" type="object" string="Set Meeting Time"
+                            invisible="calendar_event_id or state == 'cancelled'"/>
+                    <button name="action_book_meeting" type="object" string="Book Meeting" class="btn-primary"
+                            invisible="calendar_event_id or not consultation_datetime or state == 'cancelled'"/>
+                    <button name="action_analyze" type="object" string="Analyze"
+                            invisible="hide_analyze_button or analyzed or not message"/>
+                    <button name="action_analyze" type="object" string="Re-analyze"
+                            invisible="hide_analyze_button or not analyzed or not message"
+                            confirm="Analyzing again may overwrite the name, email, phone and meeting time. Continue?"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('cancelled', 'booked')"/>
+                    <button name="action_reset" type="object" string="Reopen" invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,crm,booked"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_conversation" type="object" class="oe_stat_button"
+                                icon="fa-comments" invisible="not conversation_id">
+                            <field name="conversation_message_count" widget="statinfo" string="Messages"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Customer name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Contact">
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="lang"/>
+                            <field name="partner_id" invisible="not partner_id"/>
+                        </group>
+                        <group string="Handling">
+                            <field name="assigned_user_id" widget="many2one_avatar_user"/>
+                            <field name="source_id"/>
+                            <field name="consultation_datetime"/>
+                            <field name="crm_lead_id" invisible="not crm_lead_id"/>
+                            <field name="calendar_event_id" invisible="not calendar_event_id"/>
+                            <field name="create_date" string="Created" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="topic"/>
+                    </group>
+                    <notebook>
+                        <page string="Customer Messages" name="messages">
+                            <field name="message" nolabel="1" placeholder="What the customer wrote in the chat"/>
+                        </page>
+                        <page string="Internal Note" name="note">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                        <page string="Analysis" name="analysis" invisible="not analysis_log">
+                            <group>
+                                <field name="analysis_date"/>
+                            </group>
+                            <field name="analysis_log" nolabel="1"/>
+                        </page>
+                        <page string="Conversation" name="conversation" invisible="not conversation_id">
+                            <group>
+                                <field name="conversation_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- The small window behind "Set Meeting Time" -->
+    <record id="view_lead_meeting_time_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.meeting.time</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="Meeting Time">
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="consultation_datetime" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_close_dialog" type="object" string="Save" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_lead_search" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.search</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="arch" type="xml">
+            <search string="Chatbot Leads">
+                <field name="name" filter_domain="['|', '|', ('name', 'ilike', self), ('email', 'ilike', self), ('phone', 'ilike', self)]"/>
+                <field name="topic"/>
+                <field name="assigned_user_id"/>
+                <field name="source_id"/>
+                <filter string="My Leads" name="mine" domain="[('assigned_user_id', '=', uid)]"/>
+                <filter string="Unassigned" name="unassigned" domain="[('assigned_user_id', '=', False)]"/>
+                <separator/>
+                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="In CRM" name="crm" domain="[('state', '=', 'crm')]"/>
+                <filter string="Meeting Booked" name="booked" domain="[('state', '=', 'booked')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('create_date_local', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Yesterday" name="yesterday"
+                        domain="[('create_date_local', '=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                <!-- Week runs Sunday to Saturday: step back 6 days, then forward to the nearest Sunday -->
+                <filter string="This Week" name="this_week"
+                        domain="[('create_date_local', '&gt;=', (context_today() - relativedelta(days=6) + relativedelta(weekday=6)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month"
+                        domain="[('create_date_local', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Assigned To" name="group_user" context="{'group_by': 'assigned_user_id'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source_id'}"/>
+                    <filter string="Created" name="group_created" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_lead" model="ir.actions.act_window">
+        <field name="name">Leads</field>
+        <field name="res_model">isd.ai.chatbot.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_new': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No leads yet</p>
+            <p>Leads arrive when a customer leaves their details in the chat, on Zalo or on Messenger,
+                or through the REST API.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_qa_list" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.qa.list</field>
+        <field name="model">isd.ai.chatbot.qa</field>
+        <field name="arch" type="xml">
+            <list string="Q&amp;A">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="keywords" optional="show"/>
+                <field name="show_lead_form" optional="show"/>
+                <field name="hit_count" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_qa_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.qa.form</field>
+        <field name="model">isd.ai.chatbot.qa</field>
+        <field name="arch" type="xml">
+            <form string="Q&amp;A">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title"><h1><field name="name" placeholder="e.g. Price and ordering"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="keywords" placeholder="giá&#10;bao nhiêu&#10;price&#10;how much"/>
+                        </group>
+                        <group>
+                            <field name="show_lead_form"/>
+                            <field name="sequence"/>
+                            <field name="hit_count"/>
+                        </group>
+                    </group>
+                    <div class="text-muted mb-2">
+                        The answer is given word for word when a keyword matches. With an AI key set, it is
+                        handed to the model as the approved answer, so the model cannot quote anything else.
+                    </div>
+                    <group>
+                        <field name="answer_vi"/>
+                        <field name="answer_en"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_qa_search" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.qa.search</field>
+        <field name="model">isd.ai.chatbot.qa</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="keywords"/>
+                <field name="answer_vi"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_qa" model="ir.actions.act_window">
+        <field name="name">Q&amp;A</field>
+        <field name="res_model">isd.ai.chatbot.qa</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Write the answers you want given exactly</p>
+            <p>Prices, hotline, opening hours, return policy: anything the bot must never get wrong.</p>
+        </field>
+    </record>
+</odoo>

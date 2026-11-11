@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_webhook_log_list" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.webhook.log.list</field>
+        <field name="model">isd.ai.chatbot.webhook.log</field>
+        <field name="arch" type="xml">
+            <list string="Webhook Logs" create="false" edit="false"
+                  decoration-danger="status in ('error', 'rejected')" decoration-muted="status == 'ignored'">
+                <field name="create_date" string="Received"/>
+                <field name="merchant"/>
+                <field name="http_method"/>
+                <field name="source_ip"/>
+                <field name="status" widget="badge"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_webhook_log_form" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.webhook.log.form</field>
+        <field name="model">isd.ai.chatbot.webhook.log</field>
+        <field name="arch" type="xml">
+            <form string="Webhook Log" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="merchant"/>
+                            <field name="http_method"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="create_date" string="Received"/>
+                            <field name="source_ip"/>
+                            <field name="user_agent"/>
+                        </group>
+                    </group>
+                    <group><field name="note"/></group>
+                    <notebook>
+                        <page string="Body"><field name="body_pretty" nolabel="1"/></page>
+                        <page string="Headers"><field name="headers" nolabel="1"/></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_webhook_log_search" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.webhook.log.search</field>
+        <field name="model">isd.ai.chatbot.webhook.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="body"/>
+                <filter string="Zalo" name="zalo" domain="[('merchant', '=', 'zalo')]"/>
+                <filter string="Facebook" name="facebook" domain="[('merchant', '=', 'facebook')]"/>
+                <separator/>
+                <filter string="Problems" name="problems" domain="[('status', 'in', ('error', 'rejected'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_webhook_log" model="ir.actions.act_window">
+        <field name="name">Webhook Logs</field>
+        <field name="res_model">isd.ai.chatbot.webhook.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

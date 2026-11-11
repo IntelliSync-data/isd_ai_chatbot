@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_survey_mapping_list" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.survey.mapping.list</field>
+        <field name="model">isd.ai.chatbot.survey.mapping</field>
+        <field name="arch" type="xml">
+            <list string="Survey Mappings" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="survey_id"/>
+                <field name="lead_field"/>
+                <field name="question_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_survey_mapping" model="ir.actions.act_window">
+        <field name="name">Survey Mappings</field>
+        <field name="res_model">isd.ai.chatbot.survey.mapping</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Pre-fill a survey from a lead</p>
+            <p>Pick the survey invited students get, and which of its questions the lead's name, email,
+                phone and topic answer.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_survey_mapping" name="Survey Mappings" parent="isd_ai_chatbot.menu_configuration"
+              sequence="40" action="action_survey_mapping"/>
+</odoo>

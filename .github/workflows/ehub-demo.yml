@@ -1,0 +1,90 @@
+  name: Update ISD AI Chatbot Ehub
+
+  on:
+    push:
+      branches:
+        - ehub
+
+  jobs:
+    update:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Deploy isd_ai_chatbot to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EHUB_HOST }}
+          username: ${{ secrets.EHUB_USERNAME }}
+          key: ${{ secrets.EHUB_SSH_KEY }}
+          script_stop: true
+          script: |
+            # Clone if not exists, otherwise update
+            if [ ! -d /opt/addons-system/isd_ai_chatbot ]; then
+              sudo mkdir -p /opt/addons-system
+              sudo chown odoo:odoo /opt/addons-system
+              sudo -u odoo git clone git@github-odoo:IntelliSync-data/isd_ai_chatbot.git /opt/addons-system/isd_ai_chatbot
+              cd /opt/addons-system/isd_ai_chatbot && sudo -u odoo git checkout ehub
+            else
+              # ubuntu only have permission to run git commands, so we need to use sudo -u odoo to run git commands as odoo user
+              sudo -u odoo bash -c "cd /opt/addons-system/isd_ai_chatbot && git fetch origin && git reset --hard origin/ehub" 
+            fi
+
+            # The repo holds two modules; each one goes into its own addons folder (including deletions)
+            for mod in isd_ai_chatbot isd_ai_chatbot_openeducat; do
+              sudo mkdir -p /opt/custom-addons/$mod
+              sudo rsync -av --delete \
+                /opt/addons-system/isd_ai_chatbot/$mod/ /opt/custom-addons/$mod/
+            done
+
+      - name: Update isd_ai_chatbot Module
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EHUB_HOST }}
+          username: ${{ secrets.EHUB_USERNAME }}
+          key: ${{ secrets.EHUB_SSH_KEY }}
+          script: |
+            echo "Updating apps list..."
+            echo "env['ir.module.module'].update_list(); env.cr.commit()" | sudo -u odoo /opt/odoo-venv/bin/python /opt/odoo18/odoo-bin shell -c /etc/odoo/odoo.conf -d ${{ secrets.EHUB_DB_NAME }} --no-http
+            if [ $? -ne 0 ]; then
+              echo "update_list() FAILED"
+              exit 1
+            fi
+
+            # A module that is not installed yet is skipped by -u: install it once from Apps
+            echo "Updating isd_ai_chatbot modules..."
+            sudo -u odoo /opt/odoo-venv/bin/python /opt/odoo18/odoo-bin -c /etc/odoo/odoo.conf -d ${{ secrets.EHUB_DB_NAME }} -u isd_ai_chatbot,isd_ai_chatbot_openeducat --stop-after-init --no-http
+            if [ $? -ne 0 ]; then
+              echo "Module update FAILED"
+              exit 1
+            fi
+
+      - name: Restart Odoo Service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EHUB_HOST }}
+          username: ${{ secrets.EHUB_USERNAME }}
+          key: ${{ secrets.EHUB_SSH_KEY }}
+          script: |
+            sudo systemctl restart odoo
+
+      - name: Verify Odoo Service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EHUB_HOST }}
+          username: ${{ secrets.EHUB_USERNAME }}
+          key: ${{ secrets.EHUB_SSH_KEY }}
+          script: |
+            sleep 5
+            if sudo systemctl is-active --quiet odoo; then
+              echo "Odoo restarted successfully"
+            else
+              echo "Odoo failed to restart"
+              echo "=== systemctl status ==="
+              sudo systemctl status odoo --no-pager
+              echo "=== Last 50 lines of Odoo log ==="
+              sudo tail -n 50 /var/log/odoo/odoo.log
+              exit 1
+            fi

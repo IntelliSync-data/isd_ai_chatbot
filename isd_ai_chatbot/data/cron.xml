@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cron_webhook_cleanup" model="ir.cron">
+        <field name="name">AI Chatbot: remove webhook logs older than 30 days</field>
+        <field name="model_id" ref="model_isd_ai_chatbot_webhook_log"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cleanup(days=30)</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>
