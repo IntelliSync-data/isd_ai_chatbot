@@ -70,6 +70,8 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_open_crm" type="object" class="oe_stat_button"
+                                icon="fa-star" string="CRM" invisible="not crm_lead_id"/>
                         <button name="action_open_conversation" type="object" class="oe_stat_button"
                                 icon="fa-comments" invisible="not conversation_id">
                             <field name="conversation_message_count" widget="statinfo" string="Messages"/>
@@ -178,6 +180,7 @@
 
     <record id="action_lead" model="ir.actions.act_window">
         <field name="name">Leads</field>
+        <field name="path">ai-chatbot-leads</field>
         <field name="res_model">isd.ai.chatbot.lead</field>
         <field name="view_mode">list,kanban,form</field>
         <field name="context">{'search_default_new': 1}</field>

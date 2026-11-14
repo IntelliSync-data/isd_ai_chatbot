@@ -2,12 +2,18 @@
 import base64
 import html
 import io
+import logging
 import os
 import re
 import zipfile
 import xml.etree.ElementTree as ET
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from ..services import web_page
+
+_logger = logging.getLogger(__name__)
 
 _W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 
@@ -90,7 +96,11 @@ class IsdAiChatbotKnowledge(models.Model):
         ('manual', 'Typed in'),
     ], string='Source', default='manual', required=True)
     category = fields.Char()
-    source_url = fields.Char(string='Source URL')
+    source_url = fields.Char(string='Source URL', help='A web page whose text the bot should know')
+    auto_refresh = fields.Boolean(string='Refresh Daily',
+                                  help='Read the page again every day. This replaces Content each time.')
+    last_fetched = fields.Datetime(string='Last Read', readonly=True)
+    fetch_error = fields.Char(string='Last Error', readonly=True)
     upload_file = fields.Binary(string='File', attachment=True,
                                 help='A .docx, .doc or .txt file. Its text is copied into Content.')
     upload_filename = fields.Char(string='File Name')
@@ -133,3 +143,62 @@ class IsdAiChatbotKnowledge(models.Model):
             filename = vals.get('upload_filename') or (self[:1].upload_filename or '')
             vals['content'] = extract_text(base64.b64decode(vals['upload_file']), filename)
         return super().write(vals)
+
+    # ------------------------------------------------------------ web pages
+    def _fetch_error_message(self, err):
+        messages = {
+            'scheme': _('The link must start with http:// or https://'),
+            'dns': _('Cannot find the website %(host)s.'),
+            'internal': _('%(host)s is an internal address, which the chatbot is not allowed to read.'),
+            'unreachable': _('Could not reach the page (%(error)s).'),
+            'http': _('The website answered with error %(status)s.'),
+            'not_html': _('The link is not a web page (%(type)s).'),
+            'too_big': _('The page is larger than 3 MB.'),
+            'redirects': _('The link redirects too many times.'),
+            'unreadable': _('The page could not be read.'),
+            'no_text': _('The page has almost no text. It is probably built with JavaScript, which the '
+                         'chatbot cannot read: copy the text into Content instead.'),
+        }
+        return messages.get(err.code, err.code) % err.params if err.params else messages.get(err.code, err.code)
+
+    def _read_source_url(self):
+        """Replace Content with the text of the page. Returns an error message or ''."""
+        self.ensure_one()
+        try:
+            final_url, title, text = web_page.read_page(self.source_url)
+        except web_page.FetchError as err:
+            message = self._fetch_error_message(err)
+            self.fetch_error = message
+            return message
+        vals = {'content': text, 'source_type': 'website', 'last_fetched': fields.Datetime.now(),
+                'fetch_error': False}
+        if final_url != self.source_url:
+            vals['source_url'] = final_url
+        if not self.name or self.name == self.source_url:
+            vals['name'] = title or final_url
+        self.write(vals)
+        return ''
+
+    def action_fetch_url(self):
+        self.ensure_one()
+        if not self.source_url:
+            raise UserError(_('Enter the page link in Source URL first.'))
+        error = self._read_source_url()
+        if error:
+            # Raising would roll back the error saved on the record
+            return {'type': 'ir.actions.client', 'tag': 'display_notification',
+                    'params': {'title': _('Could not read the page'), 'message': error,
+                               'type': 'danger', 'sticky': True,
+                               'next': {'type': 'ir.actions.client', 'tag': 'soft_reload'}}}
+        return {'type': 'ir.actions.client', 'tag': 'display_notification',
+                'params': {'message': _('Read %(chars)s characters from the page.', chars=self.char_count),
+                           'type': 'success', 'sticky': False,
+                           'next': {'type': 'ir.actions.client', 'tag': 'soft_reload'}}}
+
+    @api.model
+    def _cron_refresh_websites(self):
+        for doc in self.search([('auto_refresh', '=', True), ('source_url', '!=', False)]):
+            error = doc._read_source_url()
+            if error:
+                _logger.warning('AI Chatbot: could not refresh %s: %s', doc.source_url, error)
+            self.env.cr.commit()

@@ -61,6 +61,7 @@
 
     <record id="action_qa" model="ir.actions.act_window">
         <field name="name">Q&amp;A</field>
+        <field name="path">ai-chatbot-qa</field>
         <field name="res_model">isd.ai.chatbot.qa</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">

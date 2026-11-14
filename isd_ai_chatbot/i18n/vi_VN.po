@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 00:24+0000\n"
-"PO-Revision-Date: 2026-11-11 00:24+0000\n"
+"POT-Creation-Date: 2026-11-14 03:12+0000\n"
+"PO-Revision-Date: 2026-11-14 03:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,13 @@ msgid ""
 msgstr ""
 "## Tiêu đề mục\n"
 "Nội dung của mục..."
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid ""
+"%(host)s is an internal address, which the chatbot is not allowed to read."
+msgstr "%(host)s là địa chỉ nội bộ, chatbot không được phép đọc."
 
 #. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_config_form
@@ -98,6 +105,11 @@ msgid "A meeting is already booked for this lead."
 msgstr "Lead này đã được đặt lịch họp."
 
 #. module: isd_ai_chatbot
+#: model:ir.model.fields,help:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__source_url
+msgid "A web page whose text the bot should know"
+msgstr "Trang web có nội dung bot cần biết"
+
+#. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_config_form
 msgid "AI Assistant"
 msgstr "Trợ lý AI"
@@ -160,6 +172,11 @@ msgstr "AI Chatbot: đã đặt lịch họp (nhân viên)"
 #: model:mail.template,name:isd_ai_chatbot.mail_template_booking_customer
 msgid "AI Chatbot: meeting confirmation (customer)"
 msgstr "AI Chatbot: xác nhận lịch họp (khách hàng)"
+
+#. module: isd_ai_chatbot
+#: model:ir.actions.server,name:isd_ai_chatbot.cron_refresh_websites_ir_actions_server
+msgid "AI Chatbot: read knowledge web pages again"
+msgstr "AI Chatbot: đọc lại các trang web trong kho tri thức"
 
 #. module: isd_ai_chatbot
 #: model:ir.actions.server,name:isd_ai_chatbot.cron_webhook_cleanup_ir_actions_server
@@ -440,6 +457,12 @@ msgid "Cancelled"
 msgstr "Đã huỷ"
 
 #. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "Cannot find the website %(host)s."
+msgstr "Không tìm thấy website %(host)s."
+
+#. module: isd_ai_chatbot
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__category
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_search
 msgid "Category"
@@ -571,6 +594,23 @@ msgstr "Hội thoại"
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_conversation_list
 msgid "Conversations"
 msgstr "Hội thoại"
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_search
+msgid "Could Not Be Read"
+msgstr "Không đọc được"
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "Could not reach the page (%(error)s)."
+msgstr "Không truy cập được trang (%(error)s)."
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "Could not read the page"
+msgstr "Không đọc được trang"
 
 #. module: isd_ai_chatbot
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_config__auto_crm
@@ -741,6 +781,12 @@ msgid "English"
 msgstr "Tiếng Anh"
 
 #. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "Enter the page link in Source URL first."
+msgstr "Hãy nhập link trang vào ô URL nguồn trước."
+
+#. module: isd_ai_chatbot
 #: model:isd.ai.chatbot.source,name:isd_ai_chatbot.source_manual
 msgid "Entered by Hand"
 msgstr "Nhập tay"
@@ -811,6 +857,11 @@ msgstr "Cách xưng hô (VI)"
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_webhook_log__source_ip
 msgid "From IP"
 msgstr "Từ IP"
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_search
+msgid "From a Website"
+msgstr "Từ website"
 
 #. module: isd_ai_chatbot
 #: model:ir.model.fields,help:isd_ai_chatbot.field_isd_ai_chatbot_config__zalo_webhook_secret
@@ -1016,6 +1067,11 @@ msgid "Language model"
 msgstr "Mô hình AI"
 
 #. module: isd_ai_chatbot
+#: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__fetch_error
+msgid "Last Error"
+msgstr "Lỗi gần nhất"
+
+#. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_conversation_list
 msgid "Last Message"
 msgstr "Tin nhắn cuối"
@@ -1024,6 +1080,11 @@ msgstr "Tin nhắn cuối"
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_conversation__last_message_at
 msgid "Last Message At"
 msgstr "Lúc tin nhắn cuối"
+
+#. module: isd_ai_chatbot
+#: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__last_fetched
+msgid "Last Read"
+msgstr "Đọc lần cuối"
 
 #. module: isd_ai_chatbot
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_config__write_uid
@@ -1419,6 +1480,14 @@ msgid "Page ID"
 msgstr "Page ID"
 
 #. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
+msgid ""
+"Paste a page link in Source URL and press \"Read the Page\" to copy its text here.\n"
+"                        Uploading a .docx fills the content below and keeps its headings. Start each section with\n"
+"                        \"## \" on its own line: answers quote the section they came from."
+msgstr "Dán link trang vào ô URL nguồn rồi bấm \"Đọc trang\" để chép nội dung vào đây. Tải file .docx lên cũng điền nội dung bên dưới và giữ nguyên các tiêu đề. Bắt đầu mỗi mục bằng \"## \" ở dòng riêng: câu trả lời sẽ trích đúng mục."
+
+#. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_config_form
 msgid ""
 "Paste the webhook URL into the Zalo OA developer page and subscribe to\n"
@@ -1522,11 +1591,37 @@ msgid "Re-analyze"
 msgstr "Phân tích lại"
 
 #. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "Read %(chars)s characters from the page."
+msgstr "Đã đọc %(chars)s ký tự từ trang."
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
+msgid "Read the Page"
+msgstr "Đọc trang"
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
+msgid "Read the Page Again"
+msgstr "Đọc lại trang"
+
+#. module: isd_ai_chatbot
+#: model:ir.model.fields,help:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__auto_refresh
+msgid "Read the page again every day. This replaces Content each time."
+msgstr "Đọc lại trang mỗi ngày. Mỗi lần đọc sẽ thay toàn bộ Nội dung."
+
+#. module: isd_ai_chatbot
 #: model:ir.model.fields.selection,name:isd_ai_chatbot.selection__isd_ai_chatbot_webhook_log__status__received
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_webhook_log_form
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_webhook_log_list
 msgid "Received"
 msgstr "Đã nhận"
+
+#. module: isd_ai_chatbot
+#: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_knowledge__auto_refresh
+msgid "Refresh Daily"
+msgstr "Tự cập nhật hằng ngày"
 
 #. module: isd_ai_chatbot
 #: model:ir.model.fields.selection,name:isd_ai_chatbot.selection__isd_ai_chatbot_webhook_log__status__rejected
@@ -1746,6 +1841,24 @@ msgid "The chatbot settings cannot be deleted."
 msgstr "Không thể xoá cài đặt chatbot."
 
 #. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The link is not a web page (%(type)s)."
+msgstr "Link này không phải trang web (%(type)s)."
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The link must start with http:// or https://"
+msgstr "Link phải bắt đầu bằng http:// hoặc https://"
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The link redirects too many times."
+msgstr "Link chuyển hướng quá nhiều lần."
+
+#. module: isd_ai_chatbot
 #: model:ir.model.fields,help:isd_ai_chatbot.field_isd_ai_chatbot_lead__meeting_time_display
 msgid "The meeting time on the customer clock, for emails"
 msgstr "Giờ họp theo đồng hồ của khách, dùng trong email"
@@ -1756,9 +1869,35 @@ msgid "The one idea every answer should carry"
 msgstr "Ý chính mọi câu trả lời cần truyền tải"
 
 #. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The page could not be read."
+msgstr "Không đọc được nội dung trang."
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid ""
+"The page has almost no text. It is probably built with JavaScript, which the"
+" chatbot cannot read: copy the text into Content instead."
+msgstr "Trang gần như không có chữ, có lẽ trang được dựng bằng JavaScript nên chatbot không đọc được. Hãy chép nội dung vào ô Nội dung."
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The page is larger than 3 MB."
+msgstr "Trang lớn hơn 3 MB."
+
+#. module: isd_ai_chatbot
 #: model:ir.model.fields,help:isd_ai_chatbot.field_isd_ai_chatbot_conversation__page_url
 msgid "The page the website widget was opened on"
 msgstr "Trang mà khách mở widget"
+
+#. module: isd_ai_chatbot
+#. odoo-python
+#: code:addons/isd_ai_chatbot/models/knowledge.py:0
+msgid "The website answered with error %(status)s."
+msgstr "Website trả về lỗi %(status)s."
 
 #. module: isd_ai_chatbot
 #. odoo-python
@@ -1794,6 +1933,11 @@ msgstr "Bộ lọc này không hỗ trợ toán tử %s."
 #: code:addons/isd_ai_chatbot/models/lead.py:0
 msgid "This lead is already in CRM."
 msgstr "Lead này đã có trong CRM."
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
+msgid "This replaces Content with the current text of the page. Continue?"
+msgstr "Thao tác này thay Nội dung bằng nội dung hiện tại của trang. Tiếp tục?"
 
 #. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_conversation_form
@@ -1878,13 +2022,6 @@ msgid ""
 "Upload a Word file or type the text. The bot answers from these documents "
 "and cites them."
 msgstr "Tải file Word lên hoặc gõ nội dung. Bot trả lời dựa trên các tài liệu này và trích dẫn chúng."
-
-#. module: isd_ai_chatbot
-#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
-msgid ""
-"Uploading a .docx fills the content below and keeps its headings. Start each section with\n"
-"                        \"## \" on its own line: answers quote the section they came from."
-msgstr "Tải file .docx lên sẽ điền nội dung bên dưới và giữ nguyên các tiêu đề. Bắt đầu mỗi mục bằng \"## \" ở dòng riêng: câu trả lời sẽ trích đúng mục."
 
 #. module: isd_ai_chatbot
 #: model:ir.model,name:isd_ai_chatbot.model_res_users
@@ -2101,6 +2238,11 @@ msgstr ""
 #. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_config_form
 msgid "https://"
+msgstr ""
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_knowledge_form
+msgid "https://example.com/pricing"
 msgstr ""
 
 #. module: isd_ai_chatbot

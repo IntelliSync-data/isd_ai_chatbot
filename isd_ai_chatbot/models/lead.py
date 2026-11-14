@@ -180,6 +180,14 @@ class IsdAiChatbotLead(models.Model):
         self.partner_id = partner
         return partner
 
+    @api.model
+    def _crm_type(self):
+        """CRM's own rule: records of type 'lead' only show when the Leads
+        setting is on. With it off (Odoo's default) they sit in the database
+        out of sight, so the pipeline needs an opportunity."""
+        use_leads = self.env.ref('crm.group_use_lead') in self.env.ref('base.group_user').sudo().implied_ids
+        return 'lead' if use_leads else 'opportunity'
+
     def _create_crm_lead(self):
         self.ensure_one()
         if self.crm_lead_id:
@@ -193,7 +201,7 @@ class IsdAiChatbotLead(models.Model):
         ) if x)
         crm = self.env['crm.lead'].sudo().create({
             'name': _('Chatbot - %s') % self.name,
-            'type': 'lead',
+            'type': self._crm_type(),
             'contact_name': self.name,
             'email_from': self.email or False,
             'phone': self.phone or False,
@@ -300,12 +308,25 @@ class IsdAiChatbotLead(models.Model):
         if not data:
             raise UserError('\n'.join(log))
 
+    def action_open_crm(self):
+        self.ensure_one()
+        # CRM's menu actions carry no path, so a bare action is what gives a
+        # readable URL here: /odoo/.../crm.lead/<id>
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.crm_lead_id.display_name,
+            'res_model': 'crm.lead',
+            'res_id': self.crm_lead_id.id,
+            'views': [(False, 'form')],
+            'target': 'current',
+        }
+
     def action_open_conversation(self):
         self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window', 'res_model': 'isd.ai.chatbot.conversation',
-            'res_id': self.conversation_id.id, 'view_mode': 'form', 'target': 'current',
-        }
+        # The menu action, so the URL reads /odoo/.../ai-chatbot-conversations/<id>
+        action = self.env['ir.actions.act_window']._for_xml_id('isd_ai_chatbot.action_conversation')
+        action.update({'res_id': self.conversation_id.id, 'views': [(False, 'form')], 'view_mode': 'form'})
+        return action
 
     def _notify(self, message):
         return {'type': 'ir.actions.client', 'tag': 'display_notification',

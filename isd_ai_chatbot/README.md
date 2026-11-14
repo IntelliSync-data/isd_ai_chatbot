@@ -37,6 +37,19 @@ price, cost, how much => gia ban uu dai
 5. Vào **Thiết lập → Người dùng**, mở từng nhân viên nhận lead và đánh dấu **Nhận lead chatbot** (tab AI Chatbot).
 6. Nhập nội dung vào **Hỏi đáp** và **Kho tri thức**. Kho tri thức nhận file .docx/.doc/.txt và giữ lại các tiêu đề Word.
 
+### Lấy nội dung từ website
+
+Trong một tài liệu của Kho tri thức:
+1. Dán link vào ô **URL nguồn**.
+2. Bấm **Đọc trang**. Nội dung chữ của trang được chép vào ô Nội dung.
+   - Các tiêu đề h1–h3 của trang thành mục `##`, nên bot trích dẫn đúng phần.
+   - Menu, script và form bị bỏ.
+3. Tick **Tự cập nhật hằng ngày** nếu muốn cron đọc lại trang mỗi ngày. Mỗi lần đọc thay toàn bộ Nội dung, nên đừng sửa tay một tài liệu đang bật tự cập nhật.
+
+Mỗi tài liệu đọc một trang, không tự đi theo các link con. Trang dựng hoàn toàn bằng JavaScript (SPA) gần như không có chữ trong HTML, nên không đọc được; khi đó hãy chép nội dung bằng tay.
+
+Link tới `localhost`, IP nội bộ hoặc địa chỉ metadata của cloud bị từ chối, kể cả khi đến đó qua chuyển hướng.
+
 ### Phân quyền
 
 | Nhóm | Được làm gì |

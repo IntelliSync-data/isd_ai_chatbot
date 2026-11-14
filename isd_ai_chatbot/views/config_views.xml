@@ -208,6 +208,7 @@
 
     <record id="action_config" model="ir.actions.act_window">
         <field name="name">AI Chatbot Settings</field>
+        <field name="path">ai-chatbot-settings</field>
         <field name="res_model">isd.ai.chatbot.config</field>
         <field name="view_mode">form</field>
         <field name="res_id" ref="config_default"/>
