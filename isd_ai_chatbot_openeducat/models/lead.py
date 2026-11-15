@@ -20,9 +20,10 @@ class IsdAiChatbotLead(models.Model):
     @api.depends('email')
     def _compute_invite_state(self):
         Users = self.env['res.users'].sudo()
+        hidden = self.env['isd.ai.chatbot.config'].sudo().get_config().hide_invite_button
         for rec in self:
-            user = Users.search([('login', '=ilike', rec.email)], limit=1) if rec.email else Users
-            if not rec.email or (user and user.login_date):
+            user = Users.search([('login', '=ilike', rec.email)], limit=1) if rec.email and not hidden else Users
+            if hidden or not rec.email or (user and user.login_date):
                 rec.invite_state = 'none'
             else:
                 rec.invite_state = 'resend' if user else 'invite'

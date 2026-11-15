@@ -5,7 +5,7 @@
     'category': 'ISD Modules',
     'summary': 'Invite a chatbot lead as a student, with a pre-filled survey',
     'description': """
-Adds "Invite as Student" to AI Chatbot leads: creates the OpenEduCat student and
+Adds "Invite as User" to AI Chatbot leads: creates the OpenEduCat student and
 their portal login, sends the invitation, and starts a survey with the answers
 the lead already gave.
 

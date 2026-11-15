@@ -2,13 +2,13 @@
 from odoo.exceptions import AccessError
 from odoo.tests import TransactionCase, new_test_user, tagged
 
-MENUS = ('menu_root', 'menu_leads', 'menu_conversations', 'menu_webhook_logs', 'menu_configuration',
-         'menu_settings', 'menu_knowledge', 'menu_qa', 'menu_sources')
+MENUS = ('menu_root', 'menu_leads', 'menu_conversations', 'menu_content', 'menu_knowledge', 'menu_qa',
+         'menu_configuration', 'menu_settings', 'menu_sources', 'menu_webhook_logs')
 
 
 @tagged('post_install', '-at_install')
 class TestRoles(TransactionCase):
-    """Roles and menus laid out like isd_chatbot."""
+    """Roles as in isd_chatbot: who sees which menu."""
 
     @classmethod
     def setUpClass(cls):
@@ -30,9 +30,8 @@ class TestRoles(TransactionCase):
             'none': set(),
             'guest': set(),
             'user': {'menu_root', 'menu_leads', 'menu_conversations'},
-            'editor': {'menu_root', 'menu_configuration', 'menu_knowledge', 'menu_qa'},
-            'manager': {'menu_root', 'menu_leads', 'menu_conversations', 'menu_configuration',
-                        'menu_knowledge', 'menu_qa'},
+            'editor': {'menu_root', 'menu_content', 'menu_knowledge', 'menu_qa'},
+            'manager': {'menu_root', 'menu_leads', 'menu_conversations', 'menu_content', 'menu_knowledge', 'menu_qa'},
             'admin': set(MENUS),
         }
         for role, menus in expected.items():

@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_cancel']" position="before">
                 <field name="invite_state" invisible="1"/>
-                <button name="action_invite_student" type="object" string="Invite as Student"
+                <button name="action_invite_student" type="object" string="Invite as User"
                         invisible="invite_state != 'invite'"/>
                 <button name="action_invite_student" type="object" string="Resend Invitation"
                         invisible="invite_state != 'resend'"/>
@@ -25,12 +25,23 @@
         <field name="inherit_id" ref="isd_ai_chatbot.view_lead_list"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_book_meeting']" position="after">
-                <button name="action_invite_student" type="object" string="Invite as Student" class="btn-secondary"
+                <button name="action_invite_student" type="object" string="Invite as User" class="btn-secondary"
                         invisible="invite_state != 'invite'"/>
                 <button name="action_invite_student" type="object" string="Resend Invitation" class="btn-secondary"
                         invisible="invite_state != 'resend'"/>
                 <field name="invite_state" column_invisible="True"/>
             </xpath>
+        </field>
+    </record>
+
+    <record id="view_config_form_openeducat" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.config.form.openeducat</field>
+        <field name="model">isd.ai.chatbot.config</field>
+        <field name="inherit_id" ref="isd_ai_chatbot.view_config_form"/>
+        <field name="arch" type="xml">
+            <field name="hide_crm_button" position="after">
+                <field name="hide_invite_button"/>
+            </field>
         </field>
     </record>
 </odoo>

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 07:16+0000\n"
-"PO-Revision-Date: 2026-11-15 07:16+0000\n"
+"POT-Creation-Date: 2026-11-15 07:25+0000\n"
+"PO-Revision-Date: 2026-11-15 07:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1054,6 +1054,11 @@ msgstr "Thông điệp chính"
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_qa__keywords
 msgid "Keywords"
 msgstr "Từ khoá"
+
+#. module: isd_ai_chatbot
+#: model:ir.ui.menu,name:isd_ai_chatbot.menu_content
+msgid "Knowledge"
+msgstr "Tri thức"
 
 #. module: isd_ai_chatbot
 #: model:ir.actions.act_window,name:isd_ai_chatbot.action_knowledge

@@ -52,15 +52,15 @@ Link tới `localhost`, IP nội bộ hoặc địa chỉ metadata của cloud b
 
 ### Phân quyền
 
-Cùng thang role và cách xếp menu như `isd_chatbot`. Gán role trong **Thiết lập → Người dùng**, mục AI Chatbot.
+Cùng thang role như `isd_chatbot`. Gán role trong **Thiết lập → Người dùng**, mục AI Chatbot.
 
 | Role | Được làm gì | Menu thấy được |
 |---|---|---|
 | Guest | Không có quyền gì, là nền cho các role khác | Không thấy app |
 | User | Lead và hội thoại được giao cho mình | Leads, Conversations |
-| Editor | Sửa kho tri thức và hỏi đáp, không xem lead | Configuration → Knowledge Base, Q&A |
+| Editor | Sửa kho tri thức và hỏi đáp, không xem lead | Knowledge → Knowledge Base, Q&A |
 | Manager | User + Editor, xem mọi lead và hội thoại | Tất cả các menu trên |
-| Administrator | Cộng thêm cài đặt, API key, Zalo/Facebook, nhật ký webhook | Thêm Webhook Logs, Configuration → Settings, Lead Sources, Survey Mappings |
+| Administrator | Cộng thêm cài đặt, API key, Zalo/Facebook, nhật ký webhook | Thêm Configuration → Settings, Lead Sources, Webhook Logs, Survey Mappings |
 
 App **AI Chatbot** không gắn role riêng: ai không thấy menu con nào thì app tự ẩn.
 
@@ -186,7 +186,7 @@ Lỗi `400`: `{"success": false, "errors": ["name is required", "email or phone 
 Module bridge, tự cài khi database có `openeducat_core` và `survey`.
 
 - **Cấu hình → Liên kết khảo sát**: chọn khảo sát và câu hỏi nào nhận tên, email, số điện thoại, chủ đề của lead.
-- Trên lead có nút **Mời làm học viên**. Nút này làm ba việc:
+- Trên lead có nút **Mời làm người dùng** (Invite as User), ẩn được trong Cài đặt → tab Leads. Nút này làm ba việc:
   1. tạo học viên OpenEduCat với tài khoản **portal**
   2. gửi email đặt mật khẩu
   3. mở khảo sát đã điền sẵn câu trả lời từ lead

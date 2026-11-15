@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 07:16+0000\n"
-"PO-Revision-Date: 2026-11-15 07:16+0000\n"
+"POT-Creation-Date: 2026-11-15 07:22+0000\n"
+"PO-Revision-Date: 2026-11-15 07:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,11 @@ msgstr "%s đã có tài khoản đăng nhập hệ thống."
 #: model:ir.model,name:isd_ai_chatbot_openeducat.model_isd_ai_chatbot_lead
 msgid "AI Chatbot Lead"
 msgstr "Lead AI Chatbot"
+
+#. module: isd_ai_chatbot_openeducat
+#: model:ir.model,name:isd_ai_chatbot_openeducat.model_isd_ai_chatbot_config
+msgid "AI Chatbot Settings"
+msgstr "Cài đặt AI Chatbot"
 
 #. module: isd_ai_chatbot_openeducat
 #: model:ir.model,name:isd_ai_chatbot_openeducat.model_isd_ai_chatbot_survey_mapping
@@ -63,6 +68,11 @@ msgid "Email"
 msgstr "Email"
 
 #. module: isd_ai_chatbot_openeducat
+#: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_config__hide_invite_button
+msgid "Hide \"Invite as User\""
+msgstr "Ẩn nút \"Mời làm người dùng\""
+
+#. module: isd_ai_chatbot_openeducat
 #: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__id
 msgid "ID"
 msgstr "ID"
@@ -86,8 +96,8 @@ msgstr "Trạng thái mời"
 #. module: isd_ai_chatbot_openeducat
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_form_openeducat
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_list_openeducat
-msgid "Invite as Student"
-msgstr "Mời làm học viên"
+msgid "Invite as User"
+msgstr "Mời làm người dùng"
 
 #. module: isd_ai_chatbot_openeducat
 #: model:ir.model.fields,field_description:isd_ai_chatbot_openeducat.field_isd_ai_chatbot_survey_mapping__write_uid
