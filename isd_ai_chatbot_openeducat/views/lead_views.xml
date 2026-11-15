@@ -18,4 +18,19 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_lead_list_openeducat" model="ir.ui.view">
+        <field name="name">isd.ai.chatbot.lead.list.openeducat</field>
+        <field name="model">isd.ai.chatbot.lead</field>
+        <field name="inherit_id" ref="isd_ai_chatbot.view_lead_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_book_meeting']" position="after">
+                <button name="action_invite_student" type="object" string="Invite as Student" class="btn-secondary"
+                        invisible="invite_state != 'invite'"/>
+                <button name="action_invite_student" type="object" string="Resend Invitation" class="btn-secondary"
+                        invisible="invite_state != 'resend'"/>
+                <field name="invite_state" column_invisible="True"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

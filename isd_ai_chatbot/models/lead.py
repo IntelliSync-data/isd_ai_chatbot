@@ -68,7 +68,8 @@ class IsdAiChatbotLead(models.Model):
     def _compute_ui_flags(self):
         config = self.env['isd.ai.chatbot.config'].sudo().get_config()
         for rec in self:
-            rec.hide_analyze_button = config.hide_analyze_button or not config.has_language_model
+            # Without an AI key the button still works, on the same rules the chat uses
+            rec.hide_analyze_button = config.hide_analyze_button
             rec.hide_crm_button = config.hide_crm_button
 
     @api.depends('consultation_datetime')

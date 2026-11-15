@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 03:12+0000\n"
-"PO-Revision-Date: 2026-11-14 03:12+0000\n"
+"POT-Creation-Date: 2026-11-15 07:16+0000\n"
+"PO-Revision-Date: 2026-11-15 07:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -274,6 +274,7 @@ msgstr "Nhật ký phân tích"
 
 #. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_form
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_list
 msgid "Analyze"
 msgstr "Phân tích"
 
@@ -379,6 +380,7 @@ msgstr "Nội dung (định dạng)"
 #. module: isd_ai_chatbot
 #: model:ir.model.fields.selection,name:isd_ai_chatbot.selection__isd_ai_chatbot_lead_assign_wizard__next_action__book
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_form
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_list
 msgid "Book Meeting"
 msgstr "Đặt lịch họp"
 
@@ -431,6 +433,11 @@ msgstr "Icon các nút (không bắt buộc)"
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_config_form
 msgid "Buttons on a lead"
 msgstr "Nút trên lead"
+
+#. module: isd_ai_chatbot
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_form
+msgid "CRM"
+msgstr ""
 
 #. module: isd_ai_chatbot
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_lead__crm_lead_id
@@ -898,6 +905,11 @@ msgid "Group By"
 msgstr "Nhóm theo"
 
 #. module: isd_ai_chatbot
+#: model:res.groups,name:isd_ai_chatbot.group_guest
+msgid "Guest"
+msgstr "Khách (không có quyền)"
+
+#. module: isd_ai_chatbot
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_config__handoff_rule
 msgid "Hand-over Rule"
 msgstr "Quy tắc chuyển cho người thật"
@@ -1042,11 +1054,6 @@ msgstr "Thông điệp chính"
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_qa__keywords
 msgid "Keywords"
 msgstr "Từ khoá"
-
-#. module: isd_ai_chatbot
-#: model:ir.ui.menu,name:isd_ai_chatbot.menu_content
-msgid "Knowledge"
-msgstr "Tri thức"
 
 #. module: isd_ai_chatbot
 #: model:ir.actions.act_window,name:isd_ai_chatbot.action_knowledge
@@ -1322,6 +1329,11 @@ msgstr "Tóm tắt hoạt động tiếp theo"
 #: model:ir.model.fields,field_description:isd_ai_chatbot.field_isd_ai_chatbot_lead__activity_type_id
 msgid "Next Activity Type"
 msgstr "Loại hoạt động tiếp theo"
+
+#. module: isd_ai_chatbot
+#: model:res.groups,comment:isd_ai_chatbot.group_guest
+msgid "No access to the chatbot. The base the other roles build on."
+msgstr "Không có quyền vào chatbot. Là nền cho các vai trò khác."
 
 #. module: isd_ai_chatbot
 #. odoo-python
@@ -1674,6 +1686,7 @@ msgstr "Lưu"
 #. module: isd_ai_chatbot
 #: model:ir.model.fields.selection,name:isd_ai_chatbot.selection__isd_ai_chatbot_lead_assign_wizard__next_action__crm
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_form
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_list
 msgid "Save to CRM"
 msgstr "Lưu vào CRM"
 
@@ -1701,6 +1714,7 @@ msgstr "Phiên"
 
 #. module: isd_ai_chatbot
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_form
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot.view_lead_list
 msgid "Set Meeting Time"
 msgstr "Chọn giờ họp"
 

@@ -8,11 +8,12 @@ and it needs nothing installed.
 """
 import re
 
-from .text import EMAIL_RE, PHONE_RE, clean_phone
+from .text import EMAIL_RE, PHONE_RE, clean_phone, detect_language, normalize
 
+# Compared without accents, so "gap nhan vien" counts as "gặp nhân viên"
 HANDOFF_PHRASES = (
-    'nói chuyện với người thật', 'gặp người thật', 'gặp nhân viên',
-    'gặp tư vấn viên', 'nhân viên tư vấn', 'tư vấn viên', 'người thật',
+    'noi chuyen voi nguoi that', 'gap nguoi that', 'gap nhan vien',
+    'gap tu van vien', 'nhan vien tu van', 'tu van vien', 'nguoi that',
     'talk to a human', 'real person', 'human agent', 'speak to someone',
     'talk to someone', 'live agent',
 )
@@ -27,7 +28,24 @@ _TOPIC_RE = re.compile(
 # Words that are usually about time but are also common Vietnamese names:
 # "mai" is tomorrow and it is Mai; "sáng" is morning and it is Sáng
 _TIME_RE = re.compile(r'\b(sáng|chiều|tối|mai|nay|tomorrow|today|morning|afternoon|evening)\b', flags=re.I)
-_TOPIC_OR_TIME_RE = re.compile('%s|%s' % (_TOPIC_RE.pattern, _TIME_RE.pattern), flags=re.I)
+# The same for a message typed without any accent. Words that lose their
+# meaning without accents are left out: "luc" is lúc and also the name Lực,
+# "gia" is giá and also Gia, "toi" is tối and also tôi.
+_TOPIC_PLAIN_RE = re.compile(
+    r'\b(tu van|dai ly|san pham|khoa hoc|lo trinh|van de|ho tro|can|muon|bao gia|hop tac|dau tu|hoc phi)\b')
+_TIME_PLAIN_RE = re.compile(r'\b(chieu|ngay mai|hom nay|buoi)\b')
+
+
+def _has_accents(text):
+    return bool(re.search(r'[À-ỹđĐ]', text or ''))
+
+
+def _topic_word(seg):
+    return bool(_TOPIC_RE.search(seg)) or (not _has_accents(seg) and bool(_TOPIC_PLAIN_RE.search(normalize(seg))))
+
+
+def _time_word(seg):
+    return bool(_TIME_RE.search(seg)) or (not _has_accents(seg) and bool(_TIME_PLAIN_RE.search(normalize(seg))))
 
 
 def _title_cased(seg):
@@ -38,18 +56,40 @@ _SKIP_EXTRA_RE = re.compile(
     r'tư vấn chung|anytime|any time|whenever)\b',
     flags=re.I,
 )
+# Matched without accents. A bare "không" to "what would you like to discuss?"
+# means nothing in particular, and used to leave the bot asking forever.
+_SKIP_PLAIN_RE = re.compile(
+    r'\b(cu goi|goi luon|khong co gi|luc nao cung duoc|sao cung duoc|gio nao cung duoc|'
+    r'tu van chung|bo qua|anytime|any time|whenever|nothing else|thats all|that s all)\b')
+_SKIP_WHOLE = {
+    'khong', 'khong a', 'khong can', 'ko', 'k', 'khong co', 'thoi', 'chua', 'het roi', 'vay thoi',
+    'no', 'nope', 'no thanks', 'skip', 'none',
+}
 _NAME_INTRO_RE = re.compile(
+    # Each Vietnamese phrase twice: many customers type without accents
     r'(?:mình tên là|tên mình là|tôi tên là|mình tên|tên là|mình là|tôi là|em là|anh là|'
-    r'chị là|họ tên là|họ tên:?|my name is|my name\'s|i am|i\'m|this is|name:)\s*'
+    r'chị là|họ tên là|họ tên:?|'
+    r'minh ten la|ten minh la|toi ten la|minh ten|ten la|minh la|toi la|em la|anh la|'
+    r'chi la|ho ten la|ho ten:?|'
+    r'my name is|my name\'s|i am|i\'m|this is|name:)\s*'
     r'([A-Za-zÀ-ỹ]+(?:\s+[A-Za-zÀ-ỹ]+){0,3}?)'
-    r'(?=\s*(?:[,;.|\-–—]|cần|muốn|tư vấn|hỏi|liên hệ|gọi|vấn đề|and|want|need|$))',
+    r'(?=\s*(?:[,;.|\-–—]|cần|muốn|tư vấn|hỏi|liên hệ|gọi|vấn đề|'
+    r'can|muon|tu van|hoi|lien he|goi|van de|and|want|need|$))',
     flags=re.I,
 )
 _QUESTION_START_RE = re.compile(
-    r'^(what|how|why|where|when|who|which|can|could|is|are|do|does|'
+    r'^(what|how|why|where|when|who|which|could|is|are|does|'
     r'bao nhiêu|giá|tại sao|vì sao|làm sao|như thế nào|có|khi nào|ở đâu)\b',
     flags=re.I,
 )
+# "can" and "do" are also cần and đó typed without accents ("can tu van..."),
+# so they only start a question in a message that reads as English
+_QUESTION_START_EN_RE = re.compile(r'^(can|do)\b', flags=re.I)
+# Question words matched without accents, anywhere in the message: Vietnamese
+# puts them at the end ("học phí bao nhiêu"). "co" is left out: it is có and cô.
+_QUESTION_PLAIN_RE = re.compile(
+    r'\b(bao nhieu|nhu the nao|the nao|nhu nao|o dau|khi nao|tai sao|vi sao|lam sao|la gi|'
+    r'duoc khong|co khong|khong a|bao lau|may gio|gia ca)\b')
 
 # Dates as people type them in Vietnamese and English: 25/06/2026, 25-06-2026,
 # optionally followed by a time (14h, 14:30, lúc 9 giờ, at 9h).
@@ -65,6 +105,9 @@ _NOT_A_NAME = {
     'ok', 'okay', 'oke', 'ok a', 'vang', 'da', 'u', 'uh', 'um', 'yes', 'no', 'co',
     'khong', 'cam on', 'thanks', 'thank you', 'chao', 'hi', 'hello', 'hey', 'roi',
     'duoc', 'dung', 'sai', 'xin chao', 'chao ban', 'alo', 'test',
+    # "em là sinh viên" says who someone is, not what they are called
+    'sinh vien', 'hoc sinh', 'giao vien', 'phu huynh', 'nhan vien', 'khach hang', 'khach',
+    'me be', 'bo be', 'student', 'a student', 'a parent', 'parent', 'teacher',
 }
 
 
@@ -74,8 +117,8 @@ def _is_not_a_name(seg):
 
 
 def is_handoff_request(text):
-    lower = (text or '').lower()
-    return any(p in lower for p in HANDOFF_PHRASES)
+    plain = normalize(text)
+    return any(p in plain for p in HANDOFF_PHRASES)
 
 
 def find_email(text):
@@ -109,13 +152,17 @@ def looks_like_question(text):
     lower = (text or '').lower().strip()
     if find_email(lower) or find_phone(lower):
         return False
-    if re.search(r'\b(tên|mình là|em là|anh là|chị là|my name|i am|i\'m)\b', lower):
+    plain = normalize(lower)
+    if re.search(r'\b(ten|minh la|em la|anh la|chi la|toi la|my name|i am|i m)\b', plain):
         return False
-    return lower.endswith('?') or bool(_QUESTION_START_RE.search(lower))
+    return (lower.endswith('?') or bool(_QUESTION_START_RE.search(lower))
+            or bool(_QUESTION_PLAIN_RE.search(plain))
+            or (bool(_QUESTION_START_EN_RE.search(lower)) and detect_language(lower) == 'en'))
 
 
 def wants_to_skip(text):
-    return bool(_SKIP_EXTRA_RE.search(text or ''))
+    plain = normalize(text)
+    return bool(_SKIP_EXTRA_RE.search(text or '')) or plain in _SKIP_WHOLE or bool(_SKIP_PLAIN_RE.search(plain))
 
 
 def extract_name_and_topic(msg):
@@ -129,23 +176,27 @@ def extract_name_and_topic(msg):
 
     name = ''
     m = _NAME_INTRO_RE.search(rem)
-    if m and m.group(1) and not _TOPIC_RE.search(m.group(1)) and not _is_not_a_name(m.group(1)):
+    if m and m.group(1) and not _topic_word(m.group(1)) and not _is_not_a_name(m.group(1)):
         name = m.group(1).strip()
         rem = rem.replace(m.group(0), ' ').strip()
+    elif m:
+        # "em là phụ huynh": the customer said who they are, which is not a
+        # name, so no other part of the message is taken for one either
+        return '', rem
 
     topic_parts = []
     for seg in (s.strip() for s in re.split(r'[,;|\-–—]+', rem) if s.strip()):
         words = seg.split()
         if (not name and 1 <= len(words) <= 4 and 2 <= len(seg) <= 35
                 and not re.search(r'\d', seg)
-                and not _TOPIC_RE.search(seg)
-                and (not _TIME_RE.search(seg) or _title_cased(seg))
+                and not _topic_word(seg)
+                and (not _time_word(seg) or _title_cased(seg))
                 and not _SKIP_EXTRA_RE.search(seg)
                 and not looks_like_question(seg)
                 and not _is_not_a_name(seg)):
             name = re.sub(r'^(anh|chị|em|bạn|mr|ms|mrs)\.?\s+', '', seg, flags=re.I).strip() or seg
         elif _is_not_a_name(seg):
             continue
-        elif len(words) >= 2 or _TOPIC_OR_TIME_RE.search(seg) or _SKIP_EXTRA_RE.search(seg):
+        elif len(words) >= 2 or _topic_word(seg) or _time_word(seg) or _SKIP_EXTRA_RE.search(seg):
             topic_parts.append(seg)
     return name, ', '.join(topic_parts).strip()

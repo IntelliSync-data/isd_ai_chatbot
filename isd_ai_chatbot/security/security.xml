@@ -8,14 +8,21 @@
     <!-- Same ladder as isd_chatbot: a user works their own leads, an editor
          keeps the answers up to date, a manager does both for everyone, an
          admin also holds the keys -->
+    <record id="group_guest" model="res.groups">
+        <field name="name">Guest</field>
+        <field name="category_id" ref="module_category_ai_chatbot"/>
+        <field name="comment">No access to the chatbot. The base the other roles build on.</field>
+    </record>
     <record id="group_user" model="res.groups">
         <field name="name">User</field>
         <field name="category_id" ref="module_category_ai_chatbot"/>
+        <field name="implied_ids" eval="[(4, ref('group_guest'))]"/>
         <field name="comment">Works the leads assigned to them, and reads their conversations.</field>
     </record>
     <record id="group_editor" model="res.groups">
         <field name="name">Editor</field>
         <field name="category_id" ref="module_category_ai_chatbot"/>
+        <field name="implied_ids" eval="[(4, ref('group_guest'))]"/>
         <field name="comment">Keeps the knowledge base and Q&amp;A up to date. Sees no leads.</field>
     </record>
     <record id="group_manager" model="res.groups">

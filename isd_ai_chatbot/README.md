@@ -52,12 +52,17 @@ Link tới `localhost`, IP nội bộ hoặc địa chỉ metadata của cloud b
 
 ### Phân quyền
 
-| Nhóm | Được làm gì |
-|---|---|
-| Người dùng | Chỉ xem lead và hội thoại được giao cho mình |
-| Biên tập | Sửa kho tri thức và hỏi đáp, không xem lead |
-| Quản lý | Mọi lead, mọi hội thoại, cùng kho tri thức |
-| Quản trị viên | Cộng thêm cài đặt, API key, Zalo/Facebook, nhật ký webhook |
+Cùng thang role và cách xếp menu như `isd_chatbot`. Gán role trong **Thiết lập → Người dùng**, mục AI Chatbot.
+
+| Role | Được làm gì | Menu thấy được |
+|---|---|---|
+| Guest | Không có quyền gì, là nền cho các role khác | Không thấy app |
+| User | Lead và hội thoại được giao cho mình | Leads, Conversations |
+| Editor | Sửa kho tri thức và hỏi đáp, không xem lead | Configuration → Knowledge Base, Q&A |
+| Manager | User + Editor, xem mọi lead và hội thoại | Tất cả các menu trên |
+| Administrator | Cộng thêm cài đặt, API key, Zalo/Facebook, nhật ký webhook | Thêm Webhook Logs, Configuration → Settings, Lead Sources, Survey Mappings |
+
+App **AI Chatbot** không gắn role riêng: ai không thấy menu con nào thì app tự ẩn.
 
 ## Nhúng vào trang ngoài Odoo
 

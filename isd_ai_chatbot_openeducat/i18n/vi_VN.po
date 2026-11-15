@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 00:24+0000\n"
-"PO-Revision-Date: 2026-11-11 00:24+0000\n"
+"POT-Creation-Date: 2026-11-15 07:16+0000\n"
+"PO-Revision-Date: 2026-11-15 07:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -85,6 +85,7 @@ msgstr "Trạng thái mời"
 
 #. module: isd_ai_chatbot_openeducat
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_form_openeducat
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_list_openeducat
 msgid "Invite as Student"
 msgstr "Mời làm học viên"
 
@@ -144,6 +145,7 @@ msgstr "Gửi lại"
 
 #. module: isd_ai_chatbot_openeducat
 #: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_form_openeducat
+#: model_terms:ir.ui.view,arch_db:isd_ai_chatbot_openeducat.view_lead_list_openeducat
 msgid "Resend Invitation"
 msgstr "Gửi lại lời mời"
 

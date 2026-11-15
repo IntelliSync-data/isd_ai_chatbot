@@ -27,5 +27,5 @@
     </record>
 
     <menuitem id="menu_survey_mapping" name="Survey Mappings" parent="isd_ai_chatbot.menu_configuration"
-              sequence="40" action="action_survey_mapping"/>
+              sequence="15" action="action_survey_mapping" groups="isd_ai_chatbot.group_admin"/>
 </odoo>

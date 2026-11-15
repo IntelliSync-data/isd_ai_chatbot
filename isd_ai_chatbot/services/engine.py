@@ -44,7 +44,8 @@ T = {
         'need_email': " (kèm **email** nếu có)",
         'name_word': 'họ tên', 'contact_word': 'liên hệ', 'topic_word': 'nội dung', 'and': ' và ',
         'you': 'bạn', 'general_topic': 'Trao đổi trực tiếp với chuyên viên',
-        'cited': "Dạ theo tài liệu của chúng tôi {cite}:\n\n* **{heading}:** {snippet}\n\nBạn cần mình tư vấn thêm gì không ạ?",
+        # The passage itself, with its source as a [1] the customer can open
+        'cited': "{snippet} {cite}\n\nBạn cần mình tư vấn thêm gì không ạ?",
         'more': "Bạn có thể hỏi mình về:",
     },
     'en': {
@@ -66,7 +67,7 @@ T = {
         'need_email': " (and your **email** if you have one)",
         'name_word': 'name', 'contact_word': 'contact', 'topic_word': 'topic', 'and': ' and ',
         'you': 'there', 'general_topic': 'A direct conversation with our team',
-        'cited': "According to our documents {cite}:\n\n* **{heading}:** {snippet}\n\nIs there anything else I can help with?",
+        'cited': "{snippet} {cite}\n\nIs there anything else I can help with?",
         'more': "You can ask me about:",
     },
 }
@@ -230,5 +231,5 @@ class ChatEngine:
         if citations:
             first = citations[0]
             snippet = first['snippet'][:220] + ('...' if len(first['snippet']) > 220 else '')
-            return t['cited'].format(cite='[1]', heading=first['sectionHeading'], snippet=snippet)
+            return t['cited'].format(cite='[1]', snippet=snippet)
         return cfg._text('fallback_message', lang)

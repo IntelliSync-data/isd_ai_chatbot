@@ -16,6 +16,21 @@
                 <field name="state" widget="badge"
                        decoration-info="state == 'new'" decoration-warning="state == 'crm'"
                        decoration-success="state == 'booked'" decoration-muted="state == 'cancelled'"/>
+                <!-- The same buttons as the form header, so a lead can be handled from the list -->
+                <button name="action_analyze" type="object" string="Analyze" class="btn-info"
+                        invisible="hide_analyze_button or analyzed or not message or state == 'cancelled'"/>
+                <button name="action_save_to_crm" type="object" string="Save to CRM" class="btn-primary"
+                        invisible="crm_lead_id or hide_crm_button or state == 'cancelled'"/>
+                <button name="action_set_meeting_time" type="object" string="Set Meeting Time" class="btn-warning"
+                        invisible="calendar_event_id or consultation_datetime or state == 'cancelled'"/>
+                <button name="action_book_meeting" type="object" string="Book Meeting" class="btn-success"
+                        invisible="calendar_event_id or not consultation_datetime or state == 'cancelled'"/>
+                <field name="message" column_invisible="True"/>
+                <field name="analyzed" column_invisible="True"/>
+                <field name="hide_analyze_button" column_invisible="True"/>
+                <field name="hide_crm_button" column_invisible="True"/>
+                <field name="crm_lead_id" column_invisible="True"/>
+                <field name="calendar_event_id" column_invisible="True"/>
             </list>
         </field>
     </record>
