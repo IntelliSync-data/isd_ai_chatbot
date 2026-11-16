@@ -6,5 +6,6 @@ from . import source
 from . import conversation
 from . import lead
 from . import webhook_log
+from . import res_groups
 from . import res_users
 from . import website

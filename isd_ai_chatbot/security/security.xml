@@ -39,6 +39,10 @@
         <field name="comment">Settings, API keys, Zalo and Facebook credentials, webhook logs.</field>
     </record>
 
+    <!-- Rebuild the access page of the user form, so the roles show as the
+         dropdown res_groups.py asks for (also on upgrade) -->
+    <function model="res.groups" name="_update_user_groups_view"/>
+
     <record id="rule_lead_user" model="ir.rule">
         <field name="name">Chatbot lead: own leads</field>
         <field name="model_id" ref="model_isd_ai_chatbot_lead"/>
