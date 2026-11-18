@@ -35,7 +35,7 @@
             # Sync isd_ai_chatbot directory with rsync (including deletion) 
             # Using loop to sync each module separately, dont sync the 
             # whole isd_ai_chatbot directory like bloompod, kclick, vfo  
-            for mod in isd_tool isd_qr_code isd_api_builder isd_layout_builder; do
+            for mod in isd_ai_chatbot isd_ai_chatbot_openeducat; do
               sudo mkdir -p /home/ubuntu/custom_addons/$mod
               sudo rsync -av --delete \
                 --exclude='views/menu_items_override.xml.*' \
@@ -58,7 +58,7 @@
             fi
 
             echo "Updating isd_ai_chatbot module..."
-            sudo -u ubuntu /home/ubuntu/odoo-venv/bin/python /home/ubuntu/odoo18/odoo-bin -c /etc/odoo/odoo.conf -d ${{ secrets.WORKPLACE_DB_NAME }} -u isd_tool,isd_qr_code,isd_api_builder,isd_layout_builder --stop-after-init --no-http
+            sudo -u ubuntu /home/ubuntu/odoo-venv/bin/python /home/ubuntu/odoo18/odoo-bin -c /etc/odoo/odoo.conf -d ${{ secrets.WORKPLACE_DB_NAME }} -u isd_ai_chatbot,isd_ai_chatbot_openeducat --stop-after-init --no-http
             if [ $? -ne 0 ]; then
               echo "Module update FAILED"
               exit 1
